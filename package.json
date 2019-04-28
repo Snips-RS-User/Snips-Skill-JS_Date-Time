@@ -1,9 +1,15 @@
 {
-    "name": "snips-action-template",
-    "description": "Auto-generated snips action template.",
+    "name": "Snips-DateTime",
+    "description": "Date and time on demand",
     "version": "0.0.1",
+    "main": "action-DateTime.js",
+    "author": "Snips-RS-User",
     "dependencies": {
       "hermes-javascript": "^0.1.0",
       "ini": "^1.3.5"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Snips-RS-User/Snips-Skill_Date-Time"
     }
-}
+}    
