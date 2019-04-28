@@ -1,3 +1,3 @@
 #/usr/bin/env bash -e
 
-npm install
+npm install hermes-javascript
