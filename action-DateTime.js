@@ -65,7 +65,7 @@ withHermes((hermes, done) => {
         const dialog = hermes.dialog()
 
         // Subscribes to intent 'Snips-RS-User:askDate'
-        dialog.flow('intent/{{Snips-RS-User:askTime}}', async (message, flow) => {
+        dialog.flow('Snips-RS-User:askTime', async (message, flow) => {
 
         // Log intent message
         console.log(JSON.stringify(message));
