@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+/*
 var mqtt = require('mqtt');
 
 var hostname = "localhost";
@@ -49,15 +49,15 @@ function onIntentDetected(payload) {
     }
 }
 
+*/
 
 
-/*
 const ini = require('ini')
 const fs = require('fs')
 
 const { withHermes } = require('hermes-javascript')
-const configFile = fs.readFileSync('./config.ini', 'utf8')
-const config = ini.parse(configFile)
+//const configFile = fs.readFileSync('./config.ini', 'utf8')
+//const config = ini.parse(configFile)
 
 withHermes((hermes, done) => {
     try {
@@ -82,7 +82,7 @@ withHermes((hermes, done) => {
     }
 })
 
-*/
+
 
 
 
