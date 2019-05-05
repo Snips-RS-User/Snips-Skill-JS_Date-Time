@@ -1,17 +1,22 @@
 # Description
 
+WARNING : DEVELOPMENT IN PROGRESS !!
+
 Skill for Snips : to announce the "date" or the "time" on demand.
+
 
 # Generated Snips skill
 
 This is a generated javascript snips skill using the `snips-template` tool.
 It is compatible with the format expected by the `snips-skill-server`
 
+
 ## Setup
 
 This skill requires some javascript dependencies to work properly, these are
 listed in the `package.json` file. You can use the `setup.sh` script to install
 them.
+
 
 ## Executables
 
