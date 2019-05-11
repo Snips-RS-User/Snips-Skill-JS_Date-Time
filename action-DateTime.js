@@ -31,14 +31,12 @@ client.on('message', function (topic, payload) {
 
 
 var onIntentDetected = function (payload) {
-    console.log("[Snips Log] Payload : " + payload);
-    
     console.log("[Snips Log] Intent detected: sessionId="+ payload.sessionId + " - siteId=" + payload.siteId);
-    console.log("[Snips Log] Intent detected: IntentName="+ payload.intentName + " - Slots=" + JSON.stringify(payload.slots) + " - confidenceScore=" + payload.confidenceScore);
-    if (payload.intentName === "INTENT_TIME") {
+    console.log("[Snips Log] Intent detected: IntentName="+ payload.intent.intentName + " - Slots=" + JSON.stringify(payload.slots) + " - confidenceScore=" + payload.intent.confidenceScore);
+    if (payload.intent.intentName === "INTENT_TIME") {
         console.log("[Snips Log] Intent detected: Activate function Time");
     }
-    if (payload.intentName === "INTENT_DATE") {
+    if (payload.intent.intentName === "INTENT_DATE") {
         console.log("[Snips Log] Intent detected: Activate function Date");
     }
 }
