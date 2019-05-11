@@ -3,8 +3,13 @@
 var mqtt = require('mqtt');
 
 var raspi= {
+<<<<<<< HEAD
     hostname: "localhost",
     port: 1883
+=======
+    hostname = "localhost",
+    port = 1883
+>>>>>>> 4128a84a3cf9547799c7a9c6544d0495eed031f9
 }
 
 INTENT_TIME = "Snips-RS-User:askTime";
