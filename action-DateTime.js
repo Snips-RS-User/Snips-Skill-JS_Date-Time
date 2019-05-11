@@ -38,7 +38,7 @@ client.on('message', function (topic, payload) {
  * @returns {string} a sentence with the time in text format
  */
 var defineTime = function () {
-    var timeText = "";
+    var timeText = "il est ";
     var timeObject = new Date();
     switch (timeObject.getHours()) {
         case 0:
@@ -94,7 +94,7 @@ var onIntentDetected = function (payload) {
     console.log("[Snips Log] Intent detected: IntentName=" + payload.intent.intentName + " - Slots=" + JSON.stringify(payload.slots) + " - confidenceScore=" + payload.intent.confidenceScore);
     if (payload.intent.intentName == INTENT_TIME) {
         console.log("[Snips Log] Intent detected: Activate function Time");
-
+        console.log(defineTime());
     }
     if (payload.intent.intentName == INTENT_DATE) {
         console.log("[Snips Log] Intent detected: Activate function Date");
