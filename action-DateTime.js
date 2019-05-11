@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+const { withHermes } = require('hermes-javascript')
+
 var mqtt = require('mqtt');
 
 var raspi = {
@@ -100,8 +102,7 @@ var onIntentDetected = function (payload) {
         console.log("[Snips Log] Intent detected: Activate function Time");
         ttsText = defineTime();
         console.log("[Snips Log] TTS : " + ttsText);
-        client.publish(TTS_SAY, ttsText);
-        client.publish(TTS_FINISHED);
+        
 
     }
     if (payload.intent.intentName == INTENT_DATE) {
@@ -109,3 +110,20 @@ var onIntentDetected = function (payload) {
     }
 }
 
+/**
+ * Dialog
+ */
+withHermes(hermes => {
+    // Instantiate a dialog object
+    const dialog = hermes.dialog()
+ 
+    // Subscribes to intent 'myIntent'
+    dialog.flow('myIntent', (msg, flow) => {
+        // Log intent message
+        console.log(JSON.stringify(msg))
+        // End the session
+        flow.end()
+        // Use text to speech
+        return `Received message for intent ${myIntent}`
+    })
+})
