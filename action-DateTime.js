@@ -9,6 +9,7 @@ var raspi= {
 
 INTENT_TIME = "Snips-RS-User:askTime";
 INTENT_DATE = "Snips-RS-User:askDate";
+CHANNEL_TTS = "";
 
 var client  = mqtt.connect('mqtt://' + raspi.hostname, raspi.port);
 
@@ -30,6 +31,8 @@ client.on('message', function (topic, payload) {
 
 
 var onIntentDetected = function (payload) {
+    console.log("[Snips Log] Payload : " + payload);
+    
     console.log("[Snips Log] Intent detected: sessionId="+ payload.sessionId + " - siteId=" + payload.siteId);
     console.log("[Snips Log] Intent detected: IntentName="+ payload.intentName + " - Slots=" + JSON.stringify(payload.slots) + " - confidenceScore=" + payload.confidenceScore);
     if (payload.intentName === "INTENT_TIME") {
