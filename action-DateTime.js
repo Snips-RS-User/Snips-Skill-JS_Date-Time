@@ -7,9 +7,10 @@ var raspi = {
     port: 1883
 }
 
-INTENT_TIME = "Snips-RS-User:askTime";
-INTENT_DATE = "Snips-RS-User:askDate";
-CHANNEL_TTS = "";
+const INTENT_TIME = "Snips-RS-User:askTime";
+const INTENT_DATE = "Snips-RS-User:askDate";
+const TTS_SAY = "hermes/tts/say";
+const TTS_FINISHED = "hermes/tts/sayFinished";
 
 var client = mqtt.connect('mqtt://' + raspi.hostname, raspi.port);
 
@@ -34,8 +35,8 @@ client.on('message', function (topic, payload) {
  * Documentation
  * @function defineTime
  * @param {}
- * @description define and translate time in text
  * @returns {string} a sentence with the time in text format
+ * @description define and translate time in text
  */
 var defineTime = function () {
     var timeText = "il est ";
@@ -87,54 +88,24 @@ var defineTime = function () {
 /**
  * Documentation
  * @function onIntentDetected
- * @param {*} payload 
+ * @param {*} payload
+ * @returns
+ * @description Main actions when the listener is detected
  */
 var onIntentDetected = function (payload) {
+    var ttsText;
     console.log("[Snips Log] Intent detected: sessionId=" + payload.sessionId + " - siteId=" + payload.siteId);
     console.log("[Snips Log] Intent detected: IntentName=" + payload.intent.intentName + " - Slots=" + JSON.stringify(payload.slots) + " - confidenceScore=" + payload.intent.confidenceScore);
     if (payload.intent.intentName == INTENT_TIME) {
         console.log("[Snips Log] Intent detected: Activate function Time");
-        console.log(defineTime());
+        ttsText = defineTime();
+        console.log("[Snips Log] TTS : " + ttsText);
+        client.publish(TTS_SAY, ttsText);
+        client.publish(TTS_FINISHED);
+
     }
     if (payload.intent.intentName == INTENT_DATE) {
         console.log("[Snips Log] Intent detected: Activate function Date");
     }
 }
 
-
-
-/* *************************************************** */
-/*
-const ini = require('ini')
-const fs = require('fs')
-
-const { withHermes } = require('hermes-javascript')
-//const configFile = fs.readFileSync('./config.ini', 'utf8')
-//const config = ini.parse(configFile)
-
-withHermes((hermes, done) => {
-    try {
-        // Instantiate a dialog object
-        const dialog = hermes.dialog()
-
-        // Subscribes to intent 'Snips-RS-User:askDate'
-        dialog.flow('Snips-RS-User:askTime', async (message, flow) => {
-
-        // Log intent message
-        console.log(JSON.stringify(message));
-
-        // End the session
-        flow.end();
-
-        // Use text to speech
-        return `message recu`
-        })
-    } catch (error) {
-        console.error(error.toString())
-        done()
-    }
-})
-
-*/
-
-/* ******************************* */
