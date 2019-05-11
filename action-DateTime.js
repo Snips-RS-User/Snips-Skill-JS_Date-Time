@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const { withHermes } = require('hermes-javascript')
+import { withHermes } from 'hermes-javascript';
 
-var mqtt = require('mqtt');
+import { connect } from 'mqtt';
 
 var raspi = {
     hostname: "localhost",
@@ -14,7 +14,7 @@ const INTENT_DATE = "Snips-RS-User:askDate";
 const TTS_SAY = "hermes/tts/say";
 const TTS_FINISHED = "hermes/tts/sayFinished";
 
-var client = mqtt.connect('mqtt://' + raspi.hostname, raspi.port);
+var client = connect('mqtt://' + raspi.hostname, raspi.port);
 
 
 client.on('connect', function () {
