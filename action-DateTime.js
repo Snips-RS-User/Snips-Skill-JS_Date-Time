@@ -2,7 +2,7 @@
 
 var mqtt = require('mqtt');
 
-var raspi= {
+var raspi = {
     hostname: "localhost",
     port: 1883
 }
@@ -11,12 +11,12 @@ INTENT_TIME = "Snips-RS-User:askTime";
 INTENT_DATE = "Snips-RS-User:askDate";
 CHANNEL_TTS = "";
 
-var client  = mqtt.connect('mqtt://' + raspi.hostname, raspi.port);
+var client = mqtt.connect('mqtt://' + raspi.hostname, raspi.port);
 
 
 client.on('connect', function () {
     console.log("[Snips Log] Connected to MQTT broker " + raspi.hostname + ":" + raspi.port);
-    if (client.subscribe('hermes/#')){
+    if (client.subscribe('hermes/#')) {
         console.log("[Snips Log] Subscription to /hermes/# is OK");
     } else {
         console.log("[Snips Log] ERROR - Subscription to /hermes/# is KO");
@@ -30,13 +30,73 @@ client.on('message', function (topic, payload) {
 });
 
 
-var onIntentDetected = function (payload) {
-    console.log("[Snips Log] Intent detected: sessionId="+ payload.sessionId + " - siteId=" + payload.siteId);
-    console.log("[Snips Log] Intent detected: IntentName="+ payload.intent.intentName + " - Slots=" + JSON.stringify(payload.slots) + " - confidenceScore=" + payload.intent.confidenceScore);
-    if (payload.intent.intentName === "INTENT_TIME") {
-        console.log("[Snips Log] Intent detected: Activate function Time");
+/**
+ * Documentation
+ * @function defineTime
+ * @param {}
+ * @description define and translate time in text
+ * @returns {string} a sentence with the time in text format
+ */
+var defineTime = function () {
+    var timeText = "";
+    var timeObject = new Date();
+    switch (timeObject.getHours()) {
+        case 0:
+            timeText += "minuit";
+            break;
+        case 1:
+            timeText += "une heure";
+            break;
+        case 12:
+            timeText += "midi";
+            break;
+        case 21:
+            timeText += "vingt et une heures";
+            break;
+        default:
+            timeText += timeObject.getHours() + " heures";
+            break;
     }
-    if (payload.intent.intentName === "INTENT_DATE") {
+    switch (timeObject.getMinutes()) {
+        case 0:
+            timeText += "";
+            break;
+        case 1:
+            timeText += " une";
+            break;
+        case 21:
+            timeText += " vingt et une";
+            break;
+        case 31:
+            timeText += " trente et une";
+            break;
+        case 41:
+            timeText += " quarante et une";
+            break;
+        case 51:
+            timeText += " cinquante et une";
+            break;
+        default:
+            timeText += " " + timeObject.getMinutes();
+            break;
+    }
+    return timeText
+}
+
+
+/**
+ * Documentation
+ * @function onIntentDetected
+ * @param {*} payload 
+ */
+var onIntentDetected = function (payload) {
+    console.log("[Snips Log] Intent detected: sessionId=" + payload.sessionId + " - siteId=" + payload.siteId);
+    console.log("[Snips Log] Intent detected: IntentName=" + payload.intent.intentName + " - Slots=" + JSON.stringify(payload.slots) + " - confidenceScore=" + payload.intent.confidenceScore);
+    if (payload.intent.intentName == INTENT_TIME) {
+        console.log("[Snips Log] Intent detected: Activate function Time");
+
+    }
+    if (payload.intent.intentName == INTENT_DATE) {
         console.log("[Snips Log] Intent detected: Activate function Date");
     }
 }
