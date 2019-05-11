@@ -1,57 +1,50 @@
 #!/usr/bin/env node
-/*
+
 var mqtt = require('mqtt');
 
-var hostname = "localhost";
-var client  = mqtt.connect('mqtt://' + hostname, { port: 1883 });
+var raspi= {
+    hostname = "localhost",
+    port = 1883
+}
+
+INTENT_TIME = "Snips-RS-User:askTime";
+INTENT_DATE = "Snips-RS-User:askDate";
+
+
+var client  = mqtt.connect('mqtt://' + raspi.hostname, raspi.port);
+
 
 client.on('connect', function () {
-    console.log("[Snips Log] Connected to MQTT broker " + hostname);
-    client.subscribe('hermes/#');
+    console.log("[Snips Log] Connected to MQTT broker " + raspi.hostname + ":" + raspi.port);
+    if (client.subscribe('hermes/#')){
+        console.log("[Snips Log] Subscription to /hermes/# is OK");
+    } else {
+        console.log("[Snips Log] ERROR - Subscription to /hermes/# is KO");
+    }
 });
 
 client.on('message', function (topic, payload) {
-    if (topic === "hermes/asr/startListening") {
-        onListeningStateChanged("Start");
-    } else if (topic === "hermes/asr/stopListening") {
-        onListeningStateChanged("Stop");
-    } else if (topic.match(/hermes\/hotword\/.+\/detected/g) !== null) {
-        onHotwordDetected()
-    } else if (topic.match(/hermes\/intent\/.+/g) !== null) {
+    if (topic.match(/hermes\/intent\/.+/g) !== null) {
         onIntentDetected(JSON.parse(payload));
     }
 });
 
-function onListeningStateChanged(listening) {
-    console.log("[Snips Log] " + listening + " listening");
-}
 
-function onHotwordDetected() {
-    console.log("[Snips Log] Hotword detected");
-}
-
-function onIntentDetected(payload) {
-    var sessionId = payload["sessionId"];
-    var siteId = payload["siteId"];
-    var intentName = payload["intent"]["intentName"];
-    var confidenceScore = payload["intent"]["confidenceScore"];
-    var slots = payload["slots"];
-    console.log("[Snips Log] Intent detected: sessionId="+ sessionId + " - siteId=" + siteId);
-    console.log("[Snips Log] Intent detected: IntentName="+ intentName + " - Slots=" + JSON.stringify(slots) + " - confidenceScore=" + confidenceScore);
-    if (intentName === "Snips-RS-User:test1") {
-
+var onIntentDetected = function (payload) {
+    console.log("[Snips Log] Intent detected: sessionId="+ payload.sessionId + " - siteId=" + payload.siteId);
+    console.log("[Snips Log] Intent detected: IntentName="+ payload.intentName + " - Slots=" + JSON.stringify(payload.slots) + " - confidenceScore=" + payload.confidenceScore);
+    if (payload.intentName === "INTENT_TIME") {
+        console.log("[Snips Log] Intent detected: Activate function Time");
     }
-    if (intentName === "Snips-RS-User:test2") {
-
-    }
-    if (intentName === "Snips-RS-User:test3") {
-
+    if (payload.intentName === "INTENT_DATE") {
+        console.log("[Snips Log] Intent detected: Activate function Date");
     }
 }
 
-*/
 
 
+/* *************************************************** */
+/*
 const ini = require('ini')
 const fs = require('fs')
 
@@ -82,9 +75,6 @@ withHermes((hermes, done) => {
     }
 })
 
-
-
-
-
+*/
 
 /* ******************************* */
