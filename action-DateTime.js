@@ -102,28 +102,16 @@ var onIntentDetected = function (payload) {
         console.log("[Snips Log] Intent detected: Activate function Time");
         ttsText = defineTime();
         console.log("[Snips Log] TTS : " + ttsText);
-        
-
+        client.subscribe('hermes/dialogueManager/startSession', function (err) {
+            if (!err) {
+              client.publish('hermes/tts/say', "C'est l'heure" );
+              client.publish('hermes/tts/sayFinished');
+            }
+        })
     }
     if (payload.intent.intentName == INTENT_DATE) {
         console.log("[Snips Log] Intent detected: Activate function Date");
     }
 }
 
-/**
- * Dialog
- */
-withHermes(hermes => {
-    // Instantiate a dialog object
-    const dialog = hermes.dialog()
- 
-    // Subscribes to intent 'myIntent'
-    dialog.flow('myIntent', (msg, flow) => {
-        // Log intent message
-        console.log(JSON.stringify(msg))
-        // End the session
-        flow.end()
-        // Use text to speech
-        return `Received message for intent ${myIntent}`
-    })
-})
+
