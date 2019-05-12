@@ -99,9 +99,11 @@ var onIntentDetected = function (payload) {
     if (payload.intent.intentName == INTENT_TIME) {
         console.log("[Snips Log] Intent detected: Activate function Time");
         ttsText = defineTime();
-        console.log("[Snips Log] TTS : " + ttsText);
+        console.log("[Snips Log] TTS : Text=" + ttsText);
         var message = JSON.stringify({ init: { sessionId: payload.sessionId, text: "C'est l'heure" } });
-        client.publish('hermes/dialogueManager/startSession', message);
+        console.log("[Snips Log] TTS : JSON message=" + JSON.stringify(message));
+        client.publish('hermes/dialogueManager/endSession', message);
+        console.log("[Snips Log] TTS : send and close the session");
         /* client.subscribe('hermes/dialogueManager/continueSession', function (err) {
             if (!err) {
                 console.log("[Snips Log] Subscription StartSession OK");
