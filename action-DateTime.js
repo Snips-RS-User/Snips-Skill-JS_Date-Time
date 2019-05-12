@@ -52,7 +52,7 @@ client.on('message', function (topic, payload) {
  * @function defineTime
  * @param {}
  * @returns {string} a sentence with the time in text format
- * @description define and translate time in text
+ * @description define and translate the time in text
  */
 
 var defineTime = function () {
@@ -104,6 +104,29 @@ var defineTime = function () {
 
 /**
  * Documentation
+ * @function defineDate
+ * @param {}
+ * @returns {string} a sentence with the date in text format
+ * @description define and translate the date in text
+ */
+
+var defineDate = function () {
+    var dateText = "nous sommes le ";
+    var dateObject = new Date();
+    var DayTab = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+    dateText += DayTab[dateObject.getDay()] + " ";
+    if (dateObject.getDate()==1) {
+        dateText += "premier ";
+    } else {
+        dateText += dateObject.getDate() + " ";
+    }
+    dateText += dateObject.getMonth() + " " + dateObject.getFullYear();
+    return dateText
+}
+
+
+/**
+ * Documentation
  * @function onIntentDetected
  * @param {*} payload
  * @returns
@@ -122,6 +145,7 @@ var onIntentDetected = function (payload) {
     /** ACTION if INTENT_DATE */
     if (payload.intent.intentName == INTENT_DATE) {
         console.log("[Snips Log] Intent detected: Activate function Date");
+        ttsText = defineDate();
     }
     /** ACTION send the sentence and close the session */
     var sentence = JSON.stringify({ sessionId: payload.sessionId, text: ttsText });
