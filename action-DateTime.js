@@ -100,7 +100,7 @@ var onIntentDetected = function (payload) {
         console.log("[Snips Log] Intent detected: Activate function Time");
         ttsText = defineTime();
         console.log("[Snips Log] TTS : Text=" + ttsText);
-        var message = JSON.stringify({ init: { sessionId: payload.sessionId, text: "C'est l'heure" } });
+        var message = JSON.stringify({ init: { sessionId: payload.sessionId, text: ttsText } });
         console.log("[Snips Log] TTS : JSON message=" + JSON.stringify(message));
         client.publish('hermes/dialogueManager/endSession', message);
         console.log("[Snips Log] TTS : send and close the session");
