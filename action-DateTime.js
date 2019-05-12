@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { connect } from 'mqtt';
+var mqtt = require('mqtt');
 
 var raspi = {
     hostname: "localhost",
@@ -12,7 +12,7 @@ const INTENT_DATE = "Snips-RS-User:askDate";
 const TTS_SAY = "hermes/tts/say";
 const TTS_FINISHED = "hermes/tts/sayFinished";
 
-var client = connect('mqtt://' + raspi.hostname, raspi.port);
+var client = mqtt.connect('mqtt://' + raspi.hostname, raspi.port);
 
 
 client.on('connect', function () {
@@ -102,8 +102,11 @@ var onIntentDetected = function (payload) {
         console.log("[Snips Log] TTS : " + ttsText);
         client.subscribe('hermes/dialogueManager/startSession', function (err) {
             if (!err) {
+                console.log("[Snips Log] Subscription StartSession OK");
                 client.publish('hermes/tts/say', "C'est l'heure");
+                console.log("[Snips Log] Publish TTS OK");
                 client.publish('hermes/tts/sayFinished');
+                console.log("[Snips Log] Publish TTS End");
             }
         })
     }
