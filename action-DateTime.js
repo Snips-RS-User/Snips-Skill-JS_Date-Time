@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-import { withHermes } from 'hermes-javascript';
-
 import { connect } from 'mqtt';
 
 var raspi = {
@@ -104,8 +102,8 @@ var onIntentDetected = function (payload) {
         console.log("[Snips Log] TTS : " + ttsText);
         client.subscribe('hermes/dialogueManager/startSession', function (err) {
             if (!err) {
-              client.publish('hermes/tts/say', "C'est l'heure" );
-              client.publish('hermes/tts/sayFinished');
+                client.publish('hermes/tts/say', "C'est l'heure");
+                client.publish('hermes/tts/sayFinished');
             }
         })
     }
