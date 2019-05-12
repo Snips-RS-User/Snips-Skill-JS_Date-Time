@@ -135,21 +135,25 @@ var defineDate = function () {
 
 var onIntentDetected = function (payload) {
     var ttsText;
+    var detectedIntent = false;
     /** LOG description of the detected intent */
     console.log("[Snips Log] Intent detected: sessionId=" + payload.sessionId + " - siteId=" + payload.siteId);
     console.log("[Snips Log] Intent detected: IntentName=" + payload.intent.intentName + " - Slots=" + JSON.stringify(payload.slots) + " - confidenceScore=" + payload.intent.confidenceScore);
     /** ACTION if INTENT_TIME */
     if (payload.intent.intentName == INTENT_TIME) {
+        detectedIntent=true;
         ttsText = defineTime();
     }
     /** ACTION if INTENT_DATE */
     if (payload.intent.intentName == INTENT_DATE) {
-        console.log("[Snips Log] Intent detected: Activate function Date");
+        detectedIntent=true;
         ttsText = defineDate();
     }
     /** ACTION send the sentence and close the session */
-    var sentence = JSON.stringify({ sessionId: payload.sessionId, text: ttsText });
-    /** LOG description of the sended sentence */
-    console.log("[Snips Log] TTS: sentence=" + ttsText);
-    client.publish('hermes/dialogueManager/endSession', sentence);
+    if (detectedIntent) {
+        var sentence = JSON.stringify({ sessionId: payload.sessionId, text: ttsText });
+        /** LOG description of the sended sentence */
+        console.log("[Snips Log] TTS: sentence=" + ttsText);
+        client.publish('hermes/dialogueManager/endSession', sentence);
+    }
 }
