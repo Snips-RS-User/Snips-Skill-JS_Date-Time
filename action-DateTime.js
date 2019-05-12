@@ -114,13 +114,14 @@ var defineDate = function () {
     var dateText = "nous sommes le ";
     var dateObject = new Date();
     var DayTab = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+    var MonthTab =["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
     dateText += DayTab[dateObject.getDay()] + " ";
     if (dateObject.getDate()==1) {
         dateText += "premier ";
     } else {
         dateText += dateObject.getDate() + " ";
     }
-    dateText += dateObject.getMonth() + " " + dateObject.getFullYear();
+    dateText += MonthTab[dateObject.getMonth()] + " " + dateObject.getFullYear();
     return dateText
 }
 
