@@ -1,19 +1,34 @@
 #!/usr/bin/env node
+/**
+ * Documentation
+ * @requires mqtt   need to install mqtt library ">$ npm install mqtt --save"
+ */
 
 var mqtt = require('mqtt');
 
-var raspi = {
+
+/**
+ * Documentation
+ * @constant hostmane   IP or hostname of the Raspberry Pi (default="localhost")
+ * @constant port       Port connection of the Raspberry Pi (default=1883)
+ * @constant INTENT_*   Intent(s) to listen to
+ */
+
+const raspi = {
     hostname: "localhost",
     port: 1883
 }
-
 const INTENT_TIME = "Snips-RS-User:askTime";
 const INTENT_DATE = "Snips-RS-User:askDate";
-const TTS_SAY = "hermes/tts/say";
-const TTS_FINISHED = "hermes/tts/sayFinished";
+
+
+/**
+ * Documentation
+ * Connection to the Raspberry Pi
+ * Listener to intents
+ */
 
 var client = mqtt.connect('mqtt://' + raspi.hostname, raspi.port);
-
 
 client.on('connect', function () {
     console.log("[Snips Log] Connected to MQTT broker " + raspi.hostname + ":" + raspi.port);
@@ -23,6 +38,7 @@ client.on('connect', function () {
         console.log("[Snips Log] ERROR - Subscription to /hermes/# is KO");
     }
 });
+
 
 client.on('message', function (topic, payload) {
     if (topic.match(/hermes\/intent\/.+/g) !== null) {
@@ -38,6 +54,7 @@ client.on('message', function (topic, payload) {
  * @returns {string} a sentence with the time in text format
  * @description define and translate time in text
  */
+
 var defineTime = function () {
     var timeText = "il est ";
     var timeObject = new Date();
@@ -92,32 +109,23 @@ var defineTime = function () {
  * @returns
  * @description Main actions when the listener is detected
  */
+
 var onIntentDetected = function (payload) {
     var ttsText;
+    /** LOG description of the detected intent */
     console.log("[Snips Log] Intent detected: sessionId=" + payload.sessionId + " - siteId=" + payload.siteId);
     console.log("[Snips Log] Intent detected: IntentName=" + payload.intent.intentName + " - Slots=" + JSON.stringify(payload.slots) + " - confidenceScore=" + payload.intent.confidenceScore);
+    /** ACTION if INTENT_TIME */
     if (payload.intent.intentName == INTENT_TIME) {
-        console.log("[Snips Log] Intent detected: Activate function Time");
         ttsText = defineTime();
-        console.log("[Snips Log] TTS : Text=" + ttsText);
-        var message = JSON.stringify({ sessionId: payload.sessionId, text: ttsText });
-        console.log("[Snips Log] TTS : JSON message=" + JSON.stringify(message));
-        client.publish('hermes/dialogueManager/endSession', message);
-        console.log("[Snips Log] TTS : send and close the session");
-        /* client.subscribe('hermes/dialogueManager/continueSession', function (err) {
-            if (!err) {
-                console.log("[Snips Log] Subscription StartSession OK");
-                client.publish('hermes/tts/say', "C'est l'heure");
-                console.log("[Snips Log] Publish TTS OK");
-                client.publish('hermes/tts/sayFinished');
-                console.log("[Snips Log] Publish TTS End");
-            }
-        })
-        */
     }
+    /** ACTION if INTENT_DATE */
     if (payload.intent.intentName == INTENT_DATE) {
         console.log("[Snips Log] Intent detected: Activate function Date");
     }
+    /** ACTION send the sentence and close the session */
+    var sentence = JSON.stringify({ sessionId: payload.sessionId, text: ttsText });
+    /** LOG description of the sended sentence */
+    console.log("[Snips Log] TTS: sentence=" + ttsText);
+    client.publish('hermes/dialogueManager/endSession', sentence);
 }
-
-
