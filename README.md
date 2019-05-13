@@ -1,7 +1,5 @@
 # Description
 
-WARNING : DEVELOPMENT IN PROGRESS !!
-
 Skill for Snips : to announce the "date" or the "time" on demand.
 
 
@@ -23,4 +21,4 @@ them.
 This dir contains a number of javascript executables named `action-*.js`.
 One such file is generated per intent supported. These are standalone
 executables and will perform a connection to MQTT and register on the
-given intent using the `hermes-javascript` helper lib.
+given intent using the `mqtt` helper lib ($ npm install mqtt –save).
