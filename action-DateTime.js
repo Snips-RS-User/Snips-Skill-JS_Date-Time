@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 /**
  * Documentation
  * @requires mqtt   need to install mqtt library ">$ npm install mqtt --save"
@@ -98,8 +99,8 @@ var defineTime = function () {
             timeText += " " + timeObject.getMinutes();
             break;
     }
-    return timeText
-}
+    return timeText;
+};
 
 
 /**
@@ -122,8 +123,8 @@ var defineDate = function () {
         dateText += dateObject.getDate() + " ";
     }
     dateText += MonthTab[dateObject.getMonth()] + " " + dateObject.getFullYear();
-    return dateText
-}
+    return dateText;
+};
 
 
 /**
@@ -157,4 +158,4 @@ var onIntentDetected = function (payload) {
         console.log("[Snips Log] TTS: sentence=" + ttsText);
         client.publish('hermes/dialogueManager/endSession', sentence);
     }
-}
+};
