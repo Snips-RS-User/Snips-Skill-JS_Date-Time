@@ -25,6 +25,19 @@ const INTENT_DATE = "Snips-RS-User:askDate";
 
 /**
  * Documentation
+ * @function publishTTS
+ * @description Announce a message TTS with Snips
+ */
+var publishTTS = function (message) {
+    var sentence = JSON.stringify({ siteId: 'default', init: { type: 'notification', text: message }});
+    /** LOG description of the sended sentence */
+    console.log("[Snips Log] TTS: sentence=" + message);
+    client.publish('hermes/dialogueManager/startSession', sentence);
+}
+
+
+/**
+ * Documentation
  * Connection to the Raspberry Pi
  * Listener to intents
  */
@@ -138,6 +151,7 @@ var defineDate = function () {
 var onIntentDetected = function (payload) {
     var ttsText;
     var detectedIntent = false;
+    publishTTS("Date et Heure actifs.");
     /** LOG description of the detected intent */
     console.log("[Snips Log] Intent detected: sessionId=" + payload.sessionId + " - siteId=" + payload.siteId);
     console.log("[Snips Log] Intent detected: IntentName=" + payload.intent.intentName + " - Slots=" + JSON.stringify(payload.slots) + " - confidenceScore=" + payload.intent.confidenceScore);
